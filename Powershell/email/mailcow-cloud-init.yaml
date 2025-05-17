@@ -1,0 +1,15 @@
+package_update: true
+package_upgrade: true
+
+runcmd:
+  - sudo apt install -y curl git
+  - curl -sSL https://get.docker.com/ | CHANNEL=stable sh
+  - sudo apt install docker-compose-plugin
+  - sudo apt install container-selinux # For SELinux users
+  - sudo apt update
+  - sudo usermod -aG docker $USER # Add current user to docker group
+  - newgrp docker
+  - sudo systemctl enable docker --now # Enable and start Docker service
+  - git clone https://github.com/mailcow/mailcow-dockerized /opt/mailcow
+  - cd /opt/mailcow
+  - ./generate_config.sh 
